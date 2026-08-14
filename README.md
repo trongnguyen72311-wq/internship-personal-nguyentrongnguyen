@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💰 Quản Lý Thu Chi Cá Nhân (Personal Finance Management)
 
-## Getting Started
+> Dự án cá nhân trong chương trình thực tập tại **Kyanon Digital**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📌 Thông Tin Sinh Viên Thực Tập
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Họ và tên:** Nguyễn Trọng Nguyễn
+* **Mã số sinh viên (MSSV):** 2411020013
+* **Nhóm thực tập:** Nhóm 2
+* **Đơn vị thực tập:** Kyanon Digital
+* **GitHub Repository:** [internship-personal-nguyentrongnguyen](https://github.com/trongnguyen72311-wq/internship-personal-nguyentrongnguyen)
+* **Demo Deployment (Vercel):** [https://internship-personal-nguyentrongnguyen.vercel.app](https://internship-personal-nguyentrongnguyen.vercel.app)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Giới Thiệu Dự Án
 
-## Learn More
+**Quản Lý Thu Chi Cá Nhân** là ứng dụng web hiện đại giúp người dùng theo dõi thu - chi hằng ngày, quản lý danh mục tài chính và phân tích dòng tiền cá nhân trực quan, tức thì.
 
-To learn more about Next.js, take a look at the following resources:
+### ✨ Tính Năng Chính
+* 📊 **Tổng quan tài chính:** Hiển thị tự động Số dư hiện tại, Tổng thu nhập và Tổng chi tiêu.
+* 📝 **Quản lý giao dịch:** Thêm, sửa, xóa, và phân loại các khoản thu chi.
+* 🏷️ **Phân loại danh mục:** Quản lý danh mục linh hoạt (Ăn uống, Tiền điện, Lương, Thưởng...).
+* 🔍 **Tìm kiếm & Bộ lọc:** Lọc theo loại (Thu/Chi) và mốc thời gian.
+* 📱 **Responsive Design:** Giao diện tối ưu hoàn hảo trên Desktop, Tablet và Mobile.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Công Nghệ Sử Dụng (Tech Stack)
 
-## Deploy on Vercel
+* **Frontend:** [Next.js 16](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [Lucide React](https://lucide.dev/).
+* **Backend:** Next.js Server Actions / API Routes.
+* **Database & ORM:** [Prisma ORM](https://www.prisma.io/), [PostgreSQL](https://www.postgresql.org/) (Supabase).
+* **Deployment & CI/CD:** [Vercel](https://vercel.com/), [GitHub](https://github.com/).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 Cấu Trúc Thư Mục Dự Án
+
+```text
+internship-personal-nguyentrongnguyen/
+├── app/                  # Next.js App Router (Giao diện & Trang)
+│   ├── favicon.ico
+│   ├── globals.css       # Cấu hình Tailwind CSS
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Dashboard chính của ứng dụng
+├── docs/                 # Tài liệu thiết kế hệ thống
+│   ├── requirements.md   # Đặc tả yêu cầu phần mềm
+│   ├── wireframe.md      # Thiết kế giao diện & UI layout
+│   └── erd.md            # Sơ đồ CSDL & Schema
+├── lib/                  # Tiện ích dùng chung & Mock data
+│   └── mock-data.ts      # Dữ liệu mẫu ban đầu
+├── prisma/               # Cấu hình Database & Schema ORM
+│   └── schema.prisma     # Định nghĩa model Prisma
+├── public/               # Static assets (hình ảnh, icons)
+├── reports/              # Báo cáo thực tập theo tuần
+│   ├── week-01.md        # Báo cáo tiến độ Tuần 1
+│   └── slide-w1.md       # Nội dung Slide báo cáo Tuần 1
+├── package.json          # Dependencies & Scripts
+├── tsconfig.json         # Cấu hình TypeScript
+└── README.md             # Tài liệu tổng quan dự án
