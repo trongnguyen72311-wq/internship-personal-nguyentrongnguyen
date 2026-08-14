@@ -85,9 +85,22 @@ Quản lý tài chính cá nhân là nhu cầu thiết yếu hàng ngày. Việc
 
 ---
 
-## 6. Kế Hoạch Triển Khai (Roadmap)
-* **Tuần 1:** Thiết lập môi trường dự án, xây dựng giao diện Dashboard với Mock Data, cấu hình GitHub & deploy Vercel.
-* **Tuần 2:** Đặc tả Requirements, thiết kế Wireframe, xây dựng ERD & kết nối Prisma/Supabase.
-* **Tuần 3 - 4:** Xây dựng CRUD API cho giao dịch và danh mục, tích hợp Server Actions.
-* **Tuần 5 - 6:** Tích hợp bộ lọc, tìm kiếm, tính toán thống kê và hoàn thiện trải nghiệm UI/UX.
-* **Tuần 7 - 8:** Kiểm thử hệ thống (Test cases), tối ưu hiệu năng, hoàn thiện báo cáo và Slide tổng kết thực tập.
+## 6. Kế Hoạch Triển Khai (Roadmap 3 Tuần)
+
+* **Tuần 1: Khởi tạo Dự án, Thiết kế UI & Hoàn thiện Tài liệu Kỹ thuật**
+  * Thiết lập môi trường dự án với Next.js 16 (App Router), TypeScript và Tailwind CSS.
+  * Xây dựng giao diện UI cho Authentication (Login/Register), Dashboard tài chính và Modal thêm giao dịch (Mock Data).
+  * Soạn thảo bộ tài liệu kỹ thuật hoàn chỉnh: Đặc tả Requirements, Wireframe, ERD, Test Cases và Slide thuyết trình tuần 1.
+  * Cấu hình kho lưu trữ GitHub (Git Flow), thiết lập CI/CD và triển khai bản Preview lên Vercel.
+
+* **Tuần 2: Tích hợp Cơ sở dữ liệu, Xác thực & Nghiệp vụ CRUD**
+  * Thiết kế Database Schema và kết nối Supabase PostgreSQL thông qua Prisma ORM.
+  * Tích hợp luồng xác thực người dùng (Authentication) và bảo mật dữ liệu.
+  * Xây dựng Server Actions / API Routes để xử lý trọn vẹn nghiệp vụ CRUD cho giao dịch (Thu/Chi) và Danh mục.
+  * Kết nối dữ liệu động từ Database vào giao diện Dashboard.
+
+* **Tuần 3: Bộ lọc Nâng cao, Thống kê Biểu đồ, Testing & Nghiệm thu Dự án**
+  * Tích hợp tính năng tìm kiếm, bộ lọc giao dịch và biểu đồ phân tích/thống kê tài chính.
+  * Thực thi kịch bản kiểm thử (Test Cases), rà soát và khắc phục các lỗi phát sinh (Bug Fixing).
+  * Tối ưu hóa hiệu năng, bảo mật và hoàn tất bản Final Deployment trên Vercel.
+  * Hoàn thiện tài liệu kỹ thuật tổng kết, Slide nghiệm thu và bảo vệ Dự án Cá nhân.
