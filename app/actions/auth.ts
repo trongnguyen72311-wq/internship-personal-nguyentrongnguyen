@@ -14,26 +14,37 @@ export async function register(formData: FormData) {
     return { error: 'Vui lòng điền đầy đủ email và mật khẩu' }
   }
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
-  })
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    })
 
-  if (existingUser) {
-    return { error: 'Email này đã được sử dụng' }
+    if (existingUser) {
+      return { error: 'Email này đã được sử dụng' }
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await prisma.user.create({
+      data: {
+        name: name || 'Người dùng mới',
+        email,
+        password: hashedPassword,
+      },
+    })
+
+    const cookieStore = await cookies()
+    cookieStore.set('userId', user.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 ngày
+    })
+  } catch (err) {
+    console.error('Register error:', err)
+    return { error: 'Lỗi máy chủ khi đăng ký tài khoản' }
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10)
-
-  const user = await prisma.user.create({
-    data: {
-      name: name || 'Người dùng mới',
-      email,
-      password: hashedPassword,
-    },
-  })
-
-  const cookieStore = await cookies()
-  cookieStore.set('userId', user.id, { httpOnly: true, path: '/' })
 
   redirect('/')
 }
@@ -46,21 +57,32 @@ export async function login(formData: FormData) {
     return { error: 'Vui lòng điền đầy đủ email và mật khẩu' }
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email },
-  })
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    })
 
-  if (!user) {
-    return { error: 'Tài khoản không tồn tại' }
+    if (!user) {
+      return { error: 'Tài khoản không tồn tại' }
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+    if (!isPasswordValid) {
+      return { error: 'Mật khẩu không chính xác' }
+    }
+
+    const cookieStore = await cookies()
+    cookieStore.set('userId', user.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+    })
+  } catch (err) {
+    console.error('Login error:', err)
+    return { error: 'Lỗi kết nối cơ sở dữ liệu khi đăng nhập' }
   }
-
-  const isPasswordValid = await bcrypt.compare(password, user.password)
-  if (!isPasswordValid) {
-    return { error: 'Mật khẩu không chính xác' }
-  }
-
-  const cookieStore = await cookies()
-  cookieStore.set('userId', user.id, { httpOnly: true, path: '/' })
 
   redirect('/')
 }
@@ -72,13 +94,18 @@ export async function logout() {
 }
 
 export async function getCurrentUser() {
-  const cookieStore = await cookies()
-  const userId = cookieStore.get('userId')?.value
+  try {
+    const cookieStore = await cookies()
+    const userId = cookieStore.get('userId')?.value
 
-  if (!userId) return null
+    if (!userId) return null
 
-  return await prisma.user.findUnique({
-    where: { id: userId },
-    select: { id: true, name: true, email: true },
-  })
+    return await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, name: true, email: true },
+    })
+  } catch (err) {
+    console.error('Get user error:', err)
+    return null
+  }
 }
