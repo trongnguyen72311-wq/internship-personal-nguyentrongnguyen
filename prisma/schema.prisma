@@ -1,7 +1,6 @@
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -13,55 +12,39 @@ enum TransactionType {
   EXPENSE
 }
 
-enum CategoryType {
-  INCOME
-  EXPENSE
-}
-
 model User {
-  id           String        @id @default(cuid())
+  id           String        @id @default(uuid())
   email        String        @unique
   name         String?
-  image        String?
-  categories   Category[]
-  transactions Transaction[]
+  password     String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-
-  @@map("users")
+  transactions Transaction[]
+  categories   Category[]
 }
 
 model Category {
-  id           String          @id @default(cuid())
+  id           String          @id @default(uuid())
   name         String
+  type         TransactionType
   icon         String?
-  color        String?
-  type         CategoryType
-  userId       String
-  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String?
+  user         User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions Transaction[]
   createdAt    DateTime        @default(now())
-
-  @@index([userId])
-  @@map("categories")
 }
 
 model Transaction {
-  id          String          @id @default(cuid())
+  id          String          @id @default(uuid())
   title       String
-  amount      Decimal         @db.Decimal(12, 2)
+  amount      Float
   type        TransactionType
   date        DateTime        @default(now())
   note        String?
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   userId      String
   user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId  String?
-  category    Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
-
-  @@index([userId])
-  @@index([categoryId])
-  @@index([date])
-  @@map("transactions")
 }
