@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createTransaction } from '@/app/actions/transactions'
+import { Plus, X, ArrowDownLeft, ArrowUpRight } from 'lucide-react'
 
 interface Category {
   id: string
@@ -56,92 +57,96 @@ export default function TransactionForm({
     <div>
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition shadow-sm"
+        className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl transition shadow-lg shadow-indigo-600/30 active:scale-95"
       >
-        + Thêm Giao Dịch
+        <Plus className="w-4 h-4" />
+        <span>Thêm Giao Dịch</span>
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md p-6 shadow-xl border border-slate-100 dark:border-slate-800">
-            <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-4">
-              Thêm Giao Dịch Mới
-            </h2>
+        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in duration-150">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h2 className="text-base font-bold text-white">Thêm Giao Dịch Mới</h2>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
-            <div className="grid grid-cols-2 gap-2 mb-4 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
+            {/* Toggle Loại tiền */}
+            <div className="grid grid-cols-2 gap-2 p-1 bg-slate-950 rounded-xl border border-slate-800/80">
               <button
                 type="button"
-                className={`py-1.5 rounded-md font-semibold text-sm transition ${
+                className={`flex items-center justify-center gap-1.5 py-2 rounded-lg font-medium text-xs transition ${
                   type === 'EXPENSE'
-                    ? 'bg-rose-500 text-white shadow'
-                    : 'text-slate-600 dark:text-slate-400'
+                    ? 'bg-rose-500 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
                 }`}
                 onClick={() => {
                   setType('EXPENSE')
                   setCategoryId('')
                 }}
               >
+                <ArrowUpRight className="w-3.5 h-3.5" />
                 Tiền Chi
               </button>
               <button
                 type="button"
-                className={`py-1.5 rounded-md font-semibold text-sm transition ${
+                className={`flex items-center justify-center gap-1.5 py-2 rounded-lg font-medium text-xs transition ${
                   type === 'INCOME'
-                    ? 'bg-emerald-500 text-white shadow'
-                    : 'text-slate-600 dark:text-slate-400'
+                    ? 'bg-emerald-500 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
                 }`}
                 onClick={() => {
                   setType('INCOME')
                   setCategoryId('')
                 }}
               >
+                <ArrowDownLeft className="w-3.5 h-3.5" />
                 Tiền Thu
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               <div>
-                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                  Tên giao dịch
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Tên giao dịch</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ví dụ: Ăn trưa, Tiền lương..."
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                  placeholder="Ví dụ: Ăn trưa, Nhận lương..."
+                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-400 placeholder:opacity-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                  Số tiền (VNĐ)
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Số tiền (VNĐ)</label>
                 <input
                   type="number"
                   required
                   min="1000"
-                  placeholder="50000"
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                  placeholder="Ví dụ: 50000"
+                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-400 placeholder:opacity-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                  Danh mục
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Danh mục</label>
                 <select
                   required
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
                 >
-                  <option value="">-- Chọn danh mục --</option>
+                  <option value="" className="text-slate-400">-- Chọn danh mục --</option>
                   {filteredCategories.map((c) => (
-                    <option key={c.id} value={c.id}>
+                    <option key={c.id} value={c.id} className="text-white bg-slate-900">
                       {c.name}
                     </option>
                   ))}
@@ -149,32 +154,30 @@ export default function TransactionForm({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                  Ghi chú (tùy chọn)
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Ghi chú (tùy chọn)</label>
                 <input
                   type="text"
-                  placeholder="Ghi chú thêm..."
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                  placeholder="Ví dụ: Mua cho cả nhóm..."
+                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-400 placeholder:opacity-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-2.5 pt-3">
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="px-4 py-2 border border-slate-800 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-800 transition"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium disabled:opacity-50"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold disabled:opacity-50 transition shadow-lg shadow-indigo-600/30"
                 >
-                  {loading ? 'Đang lưu...' : 'Lưu giao dịch'}
+                  {loading ? 'Đang lưu...' : 'Lưu Giao Dịch'}
                 </button>
               </div>
             </form>
