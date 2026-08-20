@@ -11,10 +11,10 @@ interface Category {
 
 export default function TransactionForm({
   categories,
-  onSuccess,
+  userId,
 }: {
   categories: Category[]
-  onSuccess?: () => void
+  userId: string
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -38,7 +38,7 @@ export default function TransactionForm({
       date: new Date(),
       note,
       categoryId,
-      userId: 'demo-user-id',
+      userId,
     })
     setLoading(false)
 
@@ -47,7 +47,6 @@ export default function TransactionForm({
       setAmount('')
       setNote('')
       setIsOpen(false)
-      if (onSuccess) onSuccess()
     } else {
       alert('Có lỗi xảy ra khi tạo giao dịch')
     }
