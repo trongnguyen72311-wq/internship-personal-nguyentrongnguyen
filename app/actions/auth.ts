@@ -14,6 +14,8 @@ export async function register(formData: FormData) {
     return { error: 'Vui lòng điền đầy đủ email và mật khẩu' }
   }
 
+  let success = false
+
   try {
     const existingUser = await prisma.user.findUnique({
       where: { email },
@@ -39,14 +41,18 @@ export async function register(formData: FormData) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 ngày
+      maxAge: 60 * 60 * 24 * 7,
     })
+
+    success = true
   } catch (err) {
     console.error('Register error:', err)
-    return { error: 'Lỗi máy chủ khi đăng ký tài khoản' }
+    return { error: 'Lỗi kết nối cơ sở dữ liệu khi đăng ký' }
   }
 
-  redirect('/')
+  if (success) {
+    redirect('/')
+  }
 }
 
 export async function login(formData: FormData) {
@@ -56,6 +62,8 @@ export async function login(formData: FormData) {
   if (!email || !password) {
     return { error: 'Vui lòng điền đầy đủ email và mật khẩu' }
   }
+
+  let success = false
 
   try {
     const user = await prisma.user.findUnique({
@@ -79,12 +87,16 @@ export async function login(formData: FormData) {
       path: '/',
       maxAge: 60 * 60 * 24 * 7,
     })
+
+    success = true
   } catch (err) {
     console.error('Login error:', err)
     return { error: 'Lỗi kết nối cơ sở dữ liệu khi đăng nhập' }
   }
 
-  redirect('/')
+  if (success) {
+    redirect('/')
+  }
 }
 
 export async function logout() {
