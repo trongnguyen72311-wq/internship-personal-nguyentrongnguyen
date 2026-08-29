@@ -3,20 +3,29 @@
 import { useState } from 'react'
 import { login } from '@/app/actions/auth'
 import Link from 'next/link'
-import { Wallet, Lock, Mail, ArrowRight, Eye, EyeOff } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Wallet, Lock, Mail, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
     setLoading(true)
     setError(null)
+
+    const formData = new FormData(e.currentTarget)
     const res = await login(formData)
+
     if (res?.error) {
       setError(res.error)
       setLoading(false)
+    } else {
+      router.push('/')
+      router.refresh()
     }
   }
 
@@ -42,9 +51,9 @@ export default function LoginPage() {
           </div>
         )}
 
-        <form action={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <label className="text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
               <Mail className="w-3.5 h-3.5 text-slate-400" />
               <span>Email</span>
             </label>
@@ -53,12 +62,12 @@ export default function LoginPage() {
               name="email"
               required
               placeholder="nguyen@example.com"
-              className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 placeholder:opacity-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+              className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <label className="text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
               <Lock className="w-3.5 h-3.5 text-slate-400" />
               <span>Mật khẩu</span>
             </label>
@@ -68,7 +77,7 @@ export default function LoginPage() {
                 name="password"
                 required
                 placeholder="••••••••"
-                className="w-full pl-3.5 pr-10 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 placeholder:opacity-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+                className="w-full pl-3.5 pr-10 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
               />
               <button
                 type="button"
@@ -86,8 +95,17 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full mt-2 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 disabled:opacity-50 active:scale-[0.98]"
           >
-            <span>{loading ? 'Đang xác thực...' : 'Đăng Nhập'}</span>
-            <ArrowRight className="w-4 h-4" />
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Đang xác thực...</span>
+              </>
+            ) : (
+              <>
+                <span>Đăng Nhập</span>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
           </button>
         </form>
 

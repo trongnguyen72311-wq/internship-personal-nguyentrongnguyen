@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import EditTransactionModal from './EditTransactionModal'
 import DeleteButton from '@/components/DeleteButton'
 import { 
   CreditCard, 
@@ -12,12 +13,19 @@ import {
   Filter
 } from 'lucide-react'
 
+interface Category {
+  id: string
+  name: string
+  type: string
+}
+
 interface Transaction {
   id: string
   title: string
   amount: number
   type: 'INCOME' | 'EXPENSE'
   date: Date | string
+  categoryId: string
   category?: { name: string } | null
 }
 
@@ -26,11 +34,13 @@ export default function DashboardView({
   totalIncome,
   totalExpense,
   balance,
+  categories = [],
 }: {
   transactions: Transaction[]
   totalIncome: number
   totalExpense: number
   balance: number
+  categories?: Category[]
 }) {
   const [filterType, setFilterType] = useState<'ALL' | 'INCOME' | 'EXPENSE'>('ALL')
 
@@ -204,7 +214,12 @@ export default function DashboardView({
                   }`}>
                     {t.type === 'INCOME' ? '+' : '-'}{t.amount.toLocaleString('vi-VN')} đ
                   </span>
-                  <DeleteButton id={t.id} />
+                  
+                  {/* CỤM NÚT SỬA VÀ XÓA */}
+                  <div className="flex items-center gap-1">
+                    <EditTransactionModal transaction={t} categories={categories} />
+                    <DeleteButton id={t.id} />
+                  </div>
                 </div>
               </div>
             ))
