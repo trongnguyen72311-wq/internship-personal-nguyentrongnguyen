@@ -22,7 +22,7 @@ export default async function HomePage() {
   const transactions = transRes.data || []
   const categories = catRes.data || []
 
-  // Tính toán
+  // Tính toán số dư
   const totalIncome = transactions
     .filter((t) => t.type === 'INCOME')
     .reduce((acc, curr) => acc + curr.amount, 0)
@@ -37,10 +37,9 @@ export default async function HomePage() {
     <main className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 selection:bg-indigo-500 selection:text-white">
       <div className="max-w-5xl mx-auto space-y-6">
         
-        {/* 1. TOP HEADER: Tiêu đề bên trái - User & Logout bên phải */}
+        {/* 1. TOP HEADER */}
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-800 shadow-xl shadow-slate-950/40">
           
-          {/* Bên trái: Tiêu đề & Logo */}
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl shadow-md shadow-indigo-500/30">
               <Wallet className="w-6 h-6 text-white" />
@@ -55,7 +54,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Bên phải: Thông tin User & Nút Đăng xuất */}
           <div className="flex items-center gap-3 self-end sm:self-auto bg-slate-950/60 border border-slate-800/80 px-3.5 py-1.5 rounded-xl">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
@@ -81,7 +79,7 @@ export default async function HomePage() {
           </div>
         </header>
 
-        {/* 2. ACTION BAR: Nút thêm giao dịch */}
+        {/* 2. ACTION BAR */}
         <section className="flex items-center justify-between bg-slate-900/50 p-4 rounded-2xl border border-slate-800/60">
           <div>
             <h2 className="text-sm font-semibold text-slate-200">Bảng điều khiển tài chính</h2>
@@ -90,12 +88,13 @@ export default async function HomePage() {
           <TransactionForm categories={categories} userId={user.id} />
         </section>
 
-        {/* 3 & 4. THỐNG KÊ (Bấm để xem) & LỊCH SỬ GIAO DỊCH */}
+        {/* 3 & 4. THỐNG KÊ & LỊCH SỬ GIAO DỊCH (Đã thêm categories) */}
         <DashboardView 
           transactions={transactions}
           totalIncome={totalIncome}
           totalExpense={totalExpense}
           balance={balance}
+          categories={categories}
         />
 
       </div>
